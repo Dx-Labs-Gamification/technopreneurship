@@ -71,6 +71,9 @@ select{background:#101c14;border:3px solid var(--line);padding:8px}
 .rank{font-family:var(--pix);font-size:.85rem;text-align:center;line-height:1.7;margin:10px 0}
 .stat{text-align:center;color:var(--muted);margin:0 0 16px;font-size:.9rem}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.mute{position:fixed;top:12px;right:12px;z-index:5;font-family:var(--pix);font-size:.55rem;background:var(--btn);color:var(--cream);border:3px solid var(--line);padding:10px 12px}
+.mute:hover{border-color:var(--gold)}
+.mute[aria-pressed="true"]{color:var(--muted)}
 @media (max-width:520px){.row{grid-template-columns:1fr}.stops{font-size:.5rem}.two{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -159,7 +162,7 @@ function home(){
     e.preventDefault();
     const v=nm.value.replace(/[\u0000-\u001f<>]/g,"").trim();
     if(v.length<2){f.querySelector("#err").textContent="Enter a name with at least 2 characters.";nm.focus();return}
-    player=v; start();
+    player=v; Music.start(); start();
   };
   p.append(f); app.append(p,boardPanel());
   nm.focus();
@@ -183,7 +186,7 @@ function question(){
   card.append(el("h2","q",q.q),el("p","hint",q.hint));
   const act=el("div","act"), check=el("button","btn","Check my answer"); check.disabled=true;
   const done=right=>{
-    results[i]=right; if(right){score+=POINTS;correct++}
+    results[i]=right; Music.sfx(right); if(right){score+=POINTS;correct++}
     tr.style.setProperty("--p",correct/Q.length);
     tr.querySelectorAll(".stops span")[i].className=right?"done":"";
     app.querySelector(".xp").textContent="XP "+score+"/"+MAX;
@@ -268,6 +271,63 @@ async function save(status,board){
     const r=el("button","btn auto","Retry save"); r.onclick=()=>{r.remove();save(status,board)}; status.append(r);
   }
 }
+/* ===== BACKGROUND MUSIC (generated in the browser, no audio files needed) ===== */
+const MUSIC_VOLUME = 0.05; /* 0 = silent, 0.05 = soft background, 0.15 = loud */
+const Music=(()=>{
+  let ctx,master,filt,started=false,muted=false,step=0,next=0;
+  try{muted=localStorage.getItem("founder_mute")==="1"}catch(e){}
+  const hz=m=>440*Math.pow(2,(m-69)/12), SD=60/112/2;
+  const CH=[{b:45,a:[57,60,64]},{b:41,a:[57,60,65]},{b:48,a:[55,60,64]},{b:43,a:[55,59,62]}];
+  function tone(type,f,t,dur,vol){
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type=type;o.frequency.setValueAtTime(f,t);
+    g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.015);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g);g.connect(filt);o.start(t);o.stop(t+dur+0.05);
+  }
+  function kick(t){
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(40,t+0.12);
+    g.gain.setValueAtTime(0.5,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.15);
+    o.connect(g);g.connect(filt);o.start(t);o.stop(t+0.2);
+  }
+  function schedule(){
+    while(next<ctx.currentTime+0.3){
+      const c=CH[Math.floor(step/8)%CH.length], s=step%8;
+      if(s===0||s===4){tone("triangle",hz(c.b),next,SD*3.5,0.5);kick(next)}
+      tone("square",hz(c.a[[0,1,2,1,0,1,2,1][s]]+(s===6?12:0)),next,SD*0.9,0.12);
+      step++;next+=SD;
+    }
+  }
+  function start(){
+    if(started){if(ctx.state==="suspended")ctx.resume();return}
+    try{
+      ctx=new (window.AudioContext||window.webkitAudioContext)();
+      master=ctx.createGain();master.gain.value=muted?0:MUSIC_VOLUME;
+      filt=ctx.createBiquadFilter();filt.type="lowpass";filt.frequency.value=2200;
+      filt.connect(master);master.connect(ctx.destination);
+      next=ctx.currentTime+0.1;setInterval(schedule,100);started=true;
+    }catch(e){}
+  }
+  function sfx(ok){
+    if(!started||muted)return;
+    const t=ctx.currentTime;
+    if(ok){tone("square",hz(76),t,0.1,0.3);tone("square",hz(83),t+0.1,0.18,0.3)}
+    else tone("square",hz(52),t,0.25,0.3);
+  }
+  const btn=document.createElement("button");
+  btn.className="mute";document.body.append(btn);
+  function paint(){btn.textContent=muted?"Music: off":"Music: on";btn.setAttribute("aria-pressed",String(muted));btn.title="Turn background music "+(muted?"on":"off")}
+  btn.onclick=()=>{
+    muted=!muted;try{localStorage.setItem("founder_mute",muted?"1":"0")}catch(e){}
+    if(!started&&!muted)start();
+    if(started){master.gain.setTargetAtTime(muted?0:MUSIC_VOLUME,ctx.currentTime,0.05);if(!muted&&ctx.state==="suspended")ctx.resume()}
+    paint();
+  };
+  document.addEventListener("visibilitychange",()=>{if(!started)return;if(document.hidden)ctx.suspend();else ctx.resume()});
+  paint();
+  return {start,sfx};
+})();
+
 home();
 </script>
 </body>
