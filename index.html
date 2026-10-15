@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Startup Founder: Technopreneurship Challenge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c1710;--glow:#27402e;--panel:#0d1812;--btn:#1f2e22;--cream:#f0ebd8;--gold:#e5c76b;--muted:#8fa795;
+--line:#34503b;--ok:#7bd88f;--bad:#e57373;
+--pix:"Press Start 2P","Courier New",monospace;--mono:"Space Mono",ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:radial-gradient(ellipse at 80% -10%,var(--glow),transparent 55%),linear-gradient(180deg,#14261a,var(--bg));background-attachment:fixed;
+color:var(--cream);font-family:var(--mono);line-height:1.6;min-height:100vh;display:flex;justify-content:center;padding:36px 16px 56px}
+main{width:100%;max-width:680px}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.kick{font-family:var(--pix);font-size:.7rem;letter-spacing:.5em;color:var(--muted);text-align:center;margin:0 0 22px}
+h1{font-family:var(--pix);font-weight:400;font-size:clamp(1.3rem,6vw,2.4rem);line-height:1.35;text-align:center;margin:0 0 20px;text-transform:uppercase;text-shadow:4px 4px 0 #000}
+h1 em{font-style:normal;color:var(--gold)}
+.lead{text-align:center;color:var(--muted);margin:0 auto 36px;max-width:520px}
+.panel{position:relative;background:var(--panel);border-top:6px solid var(--cream);border-left:6px solid var(--cream);padding:30px 22px 24px;margin-bottom:30px;
+clip-path:polygon(0 14px,14px 14px,14px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%)}
+.tag{position:absolute;top:0;right:16px;background:var(--cream);color:var(--bg);font-family:var(--pix);font-size:.55rem;padding:5px 9px}
+h2{font-family:var(--pix);font-weight:400;font-size:.95rem;line-height:1.6;margin:0 0 10px;text-transform:uppercase}
+.q{font-family:var(--mono);font-weight:700;font-size:1.05rem;text-transform:none;line-height:1.5}
+.hint{color:var(--muted);font-size:.88rem;margin:0 0 16px}
+label{display:block;font-size:.75rem;letter-spacing:.15em;color:var(--muted);margin:18px 0 6px;text-transform:uppercase}
+input[type=text]{width:100%;background:#fffef8;color:#16241a;border:3px solid #16241a;padding:14px;font-size:1rem}
+.err{color:var(--bad);font-size:.85rem;min-height:1.4em;margin:6px 0 0}
+.btn{font-family:var(--pix);font-size:.8rem;text-transform:uppercase;background:var(--btn);border:0;padding:20px 22px;width:100%;letter-spacing:.08em}
+.btn:hover:enabled,.btn.gold{background:var(--gold);color:#1a1606}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.auto{width:auto}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:center;font-family:var(--pix);font-size:.6rem;margin-bottom:14px}
+.top .xp{color:var(--gold)}
+.top .who{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track{position:relative;height:66px;margin:0 0 24px;--p:0}
+.line{position:absolute;left:0;right:0;top:30px;height:6px;background:var(--line)}
+.fill{position:absolute;left:0;top:30px;height:6px;background:var(--gold);width:calc((100% - 48px)*var(--p) + 24px);transition:width .8s steps(8)}
+.rocket{position:absolute;top:16px;left:calc((100% - 48px)*var(--p));width:48px;height:32px;transition:left .8s steps(8)}
+.stops{position:absolute;left:0;right:0;top:46px;display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted)}
+.stops span.done{color:var(--ok)}
+.opts{display:grid;gap:12px}
+.opt{background:var(--btn);border:3px solid var(--line);box-shadow:4px 4px 0 #000;padding:12px 14px;text-align:left;font-size:.92rem}
+.opt:hover:enabled{border-color:var(--gold)}
+.opt.sel{border-color:var(--gold);background:#2d4232}
+.opt.ok{border-color:var(--ok);background:#1d3a25}
+.opt.bad{border-color:var(--bad);background:#3d2222}
+.opt:disabled{cursor:default;color:var(--cream)}
+.row{display:grid;grid-template-columns:1fr 200px;gap:10px;align-items:center;background:var(--btn);border:3px solid var(--line);padding:10px 12px;margin-bottom:12px}
+.row.ok{border-color:var(--ok)} .row.bad{border-color:var(--bad)}
+select{background:#101c14;border:3px solid var(--line);padding:8px}
+.pitch{margin:0 0 14px;padding-left:26px;min-height:26px;color:var(--gold)}
+.act{margin-top:16px}
+.fb{margin-top:18px;padding:12px 14px;background:var(--btn);border-left:6px solid var(--line)}
+.fb.ok{border-left-color:var(--ok)} .fb.bad{border-left-color:var(--bad)}
+.fb b{display:block;font-family:var(--pix);font-size:.7rem;font-weight:400;margin-bottom:6px}
+.fb span{color:var(--muted);font-size:.9rem}
+.board{list-style:none;margin:0;padding:0}
+.board li{display:grid;grid-template-columns:44px 1fr auto;gap:8px;padding:9px 6px;border-bottom:2px dashed var(--line)}
+.board li.me{background:#1d3a25;color:var(--gold)}
+.board .n{font-family:var(--pix);font-size:.65rem;color:var(--muted);padding-top:3px}
+.board .s{font-family:var(--pix);font-size:.7rem;color:var(--gold);padding-top:2px}
+.board .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.note{text-align:center;color:var(--muted);padding:12px 0;margin:0}
+.big{font-family:var(--pix);font-size:clamp(1.8rem,9vw,3rem);color:var(--gold);text-align:center;text-shadow:4px 4px 0 #000;margin:6px 0}
+.rank{font-family:var(--pix);font-size:.85rem;text-align:center;line-height:1.7;margin:10px 0}
+.stat{text-align:center;color:var(--muted);margin:0 0 16px;font-size:.9rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+@media (max-width:520px){.row{grid-template-columns:1fr}.stops{font-size:.5rem}.two{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+/* ===== SETTINGS: paste your Google Apps Script Web App URL here (ends with /exec) ===== */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJRYICD4GHjQAx1nx8Drmn--fOBOSHSnPSKcmU_-mqAxZ8V2tTq1qOGox-mXbFs8n-/exec";
+
+const POINTS = 10;
+const RANKS = [[50,"Unicorn Founder"],[30,"Seed-Funded Startup"],[10,"Promising Side Project"],[0,"Back to the drawing board"]];
+const Q = [
+ { stop:"Problem", type:"single",
+   q:"Which is the best idea to start a startup with?", hint:"Tap one answer.",
+   options:["Students in Manila spend hours looking for a safe, affordable boarding house","An app, because apps are cool","A new technology that has no clear use yet","The same app as a big brand, with a different color"],
+   answer:0, why:"Great startups begin with a real problem that real people have." },
+ { stop:"Validate", type:"multi", pick:2,
+   q:"Pick the 2 smartest ways to test your idea before building it.", hint:"Choose 2, then check your answer.",
+   options:[{t:"Interview 10 people who have the problem",ok:1},{t:"Ask friends if they like your logo",ok:0},{t:"Make a simple sign-up page and see who joins",ok:1},{t:"Build the full app first, then see what happens",ok:0},{t:"Wait and hope customers show up",ok:0}],
+   why:"Talking to real users and checking sign-ups are cheap ways to learn early." },
+ { stop:"MVP", type:"multi", pick:3,
+   q:"Your app lets people order food from nearby carinderias. Version 1 can only have 3 features. Which 3?", hint:"Choose 3, then check your answer.",
+   options:[{t:"Browse the menu",ok:1},{t:"Place an order",ok:1},{t:"Pay online or choose cash on delivery",ok:1},{t:"Custom avatars",ok:0},{t:"Dark mode",ok:0},{t:"Built-in video games",ok:0}],
+   why:"An MVP is the simplest version that solves the main problem. Browse, order, and pay is the core." },
+ { stop:"Money", type:"match",
+   q:"Match each way of earning money to its business model.", hint:"Pick a model for every row, then check.",
+   choices:["Freemium","Subscription","Marketplace commission"],
+   rows:[{t:"Free basic plan, pay for extra features",a:"Freemium"},{t:"A monthly fee for unlimited use",a:"Subscription"},{t:"A small cut every time a seller makes a sale",a:"Marketplace commission"}],
+   why:"Freemium: free plus paid upgrades. Subscription: repeat monthly fee. Marketplace: a cut of each sale." },
+ { stop:"Pitch", type:"order",
+   q:"Build your investor pitch. Tap the parts in the best order.", hint:"Tap all 4 parts in order, then check. Use Undo if you slip.",
+   items:["The problem you solve","Your solution","Proof that people want it","What you are asking for"],
+   why:"A good pitch flows from problem, to solution, to proof, to the ask." }
+];
+
+/* ===== ENGINE ===== */
+const app=document.getElementById("app");
+let player="", i=0, score=0, correct=0, results=[];
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const shuffle=a=>{a=a.slice();for(let n=a.length-1;n>0;n--){const j=Math.floor(Math.random()*(n+1));[a[n],a[j]]=[a[j],a[n]]}return a};
+const ROCKET='<svg class="rocket" viewBox="0 0 48 32" aria-hidden="true"><path d="M8 16 L0 10 L3 16 L0 22Z" fill="#e5c76b"/><path d="M12 8 L6 1 L18 10Z M12 24 L6 31 L18 22Z" fill="#7bd88f"/><path d="M8 16 Q26 0 46 16 Q26 32 8 16Z" fill="#f0ebd8"/><circle cx="30" cy="16" r="4" fill="#0c1710"/></svg>';
+const MAX=POINTS*Q.length;
+
+function panel(tag,title){
+  const p=el("section","panel");
+  p.append(el("span","tag",tag),el("h2","",title));
+  return p;
+}
+
+/* ----- leaderboard ----- */
+function boardPanel(){
+  const p=panel("Top 10","Leaderboard"), body=el("div");
+  p.append(body); loadBoard(body); p.reload=()=>loadBoard(body); return p;
+}
+async function loadBoard(body){
+  body.innerHTML="";
+  const note=t=>{body.innerHTML="";body.append(el("p","note",t))};
+  if(!SCRIPT_URL){note("Leaderboard is not connected yet. Add your Apps Script URL in the code.");return}
+  note("Loading scores...");
+  try{
+    const r=await fetch(SCRIPT_URL+"?t="+Date.now()); const d=await r.json();
+    if(!d.ok||!d.scores.length){note("No scores yet. Be the first on the board.");return}
+    const ol=el("ol","board");
+    d.scores.forEach((s,n)=>{
+      const li=el("li",String(s.name).toLowerCase()===player.toLowerCase()?"me":"");
+      const a=el("span","n","#"+(n+1)), b=el("span","nm"), c=el("span","s",s.score+" XP");
+      b.textContent=s.name; li.append(a,b,c); ol.append(li);
+    });
+    body.innerHTML=""; body.append(ol);
+  }catch(e){note("Could not load scores. Check your connection and reload.")}
+}
+
+/* ----- start screen ----- */
+function home(){
+  app.innerHTML="";
+  app.append(el("p","kick","START"),
+    el("h1","","Startup <em>Founder</em>"),
+    el("p","lead","Five quick startup stages. Ten XP each. Beat the class and land on the leaderboard."));
+  const p=panel("Session","Enter your name");
+  p.append(el("p","hint","Your score gets saved to the shared leaderboard. Everyone in the class can see it."));
+  const f=el("form");
+  f.innerHTML='<label for="nm">Player name</label><input id="nm" type="text" maxlength="20" autocomplete="nickname" placeholder="e.g. founder_juan" value="'+player.replace(/"/g,"")+'"><p class="err" id="err" role="alert"></p>';
+  const go=el("button","btn","&#9654; Press start"); go.type="submit"; f.append(go);
+  f.onsubmit=e=>{
+    e.preventDefault();
+    const v=f.nm.value.replace(/[\u0000-\u001f<>]/g,"").trim();
+    if(v.length<2){f.querySelector("#err").textContent="Enter a name with at least 2 characters.";f.nm.focus();return}
+    player=v; start();
+  };
+  p.append(f); app.append(p,boardPanel());
+  f.nm.focus();
+}
+function start(){i=0;score=0;correct=0;results=[];question()}
+
+/* ----- play ----- */
+function track(){
+  const t=el("div","track"); t.style.setProperty("--p",correct/Q.length);
+  t.innerHTML='<div class="line"></div><div class="fill"></div>'+ROCKET+'<div class="stops">'+Q.map((q,k)=>'<span class="'+(results[k]?"done":"")+'">'+q.stop+'</span>').join("")+'</div>';
+  return t;
+}
+function top(){
+  const d=el("div","top"), w=el("span","who"), x=el("span","xp","XP "+score+"/"+MAX);
+  w.textContent=player; d.append(w,x); return d;
+}
+function question(){
+  const q=Q[i]; app.innerHTML="";
+  const tr=track(); app.append(top(),tr);
+  const card=panel("Stage "+(i+1)+"/"+Q.length,q.stop);
+  card.append(el("h2","q",q.q),el("p","hint",q.hint));
+  const act=el("div","act"), check=el("button","btn","Check my answer"); check.disabled=true;
+  const done=right=>{
+    results[i]=right; if(right){score+=POINTS;correct++}
+    tr.style.setProperty("--p",correct/Q.length);
+    tr.querySelectorAll(".stops span")[i].className=right?"done":"";
+    app.querySelector(".xp").textContent="XP "+score+"/"+MAX;
+    card.append(el("div","fb "+(right?"ok":"bad"),"<b>"+(right?"Correct! +"+POINTS+" XP":"Not quite. +0 XP")+"</b><span>"+q.why+"</span>"));
+    const last=i===Q.length-1, nx=el("button","btn gold",last?"See my results":"Next stage");
+    nx.style.marginTop="18px"; nx.onclick=()=>{if(last)finish();else{i++;question()}};
+    card.append(nx); nx.focus();
+  };
+  const api={single,multi,match,order}[q.type](q,done,v=>{check.disabled=!v});
+  card.append(api.node);
+  if(q.type!=="single"){
+    check.onclick=()=>{act.remove();const r=api.check();api.reveal&&api.reveal(r);done(r)};
+    act.append(check); card.append(act);
+  }
+  app.append(card);
+}
+function single(q,done){
+  const w=el("div","opts"), o=shuffle(q.options.map((t,k)=>({t,k})));
+  o.forEach(x=>{const b=el("button","opt");b.textContent=x.t;
+    b.onclick=()=>{[...w.children].forEach((c,n)=>{c.disabled=true;if(o[n].k===q.answer)c.classList.add("ok");else if(c===b)c.classList.add("bad")});done(x.k===q.answer)};
+    w.append(b)});
+  return {node:w};
+}
+function multi(q,done,ready){
+  const w=el("div","opts"), o=shuffle(q.options), sel=new Set();
+  o.forEach(x=>{const b=el("button","opt");b.textContent=x.t;
+    b.onclick=()=>{if(sel.has(x)){sel.delete(x);b.classList.remove("sel")}else if(sel.size<q.pick){sel.add(x);b.classList.add("sel")}ready(sel.size===q.pick)};
+    w.append(b)});
+  return {node:w,check:()=>sel.size===q.pick&&[...sel].every(x=>x.ok),
+    reveal:()=>[...w.children].forEach((c,n)=>{c.disabled=true;c.classList.remove("sel");if(o[n].ok)c.classList.add("ok");else if(sel.has(o[n]))c.classList.add("bad")})};
+}
+function match(q,done,ready){
+  const w=el("div"), sels=[], rows=[];
+  q.rows.forEach(r=>{
+    const row=el("div","row"); row.append(el("div","",r.t));
+    const s=el("select"); s.setAttribute("aria-label",r.t); s.append(new Option("Choose a model",""));
+    shuffle(q.choices).forEach(c=>s.append(new Option(c,c)));
+    s.onchange=()=>ready(sels.every(x=>x.value));
+    row.append(s); sels.push(s); rows.push(row); w.append(row);
+  });
+  return {node:w,check:()=>sels.every((s,n)=>s.value===q.rows[n].a),
+    reveal:()=>sels.forEach((s,n)=>{s.disabled=true;const ok=s.value===q.rows[n].a;rows[n].classList.add(ok?"ok":"bad");if(!ok)rows[n].append(el("div","hint","Answer: "+q.rows[n].a))})};
+}
+function order(q,done,ready){
+  const w=el("div"), list=el("ol","pitch"), box=el("div","opts"), seq=[];
+  const btns=shuffle(q.items.map((t,k)=>({t,k}))).map(x=>{
+    const b=el("button","opt");b.textContent=x.t;
+    b.onclick=()=>{seq.push(x);b.disabled=true;draw()}; box.append(b); return b});
+  const undo=el("button","btn auto","Undo last"); undo.style.marginTop="14px";
+  undo.onclick=()=>{const x=seq.pop();if(x){btns.find(b=>b.textContent===x.t).disabled=false;draw()}};
+  function draw(){list.innerHTML=seq.map(x=>"<li>"+x.t+"</li>").join("");ready(seq.length===q.items.length)}
+  w.append(el("p","hint","Your pitch so far:"),list,box,undo);
+  return {node:w,check:()=>seq.every((x,n)=>x.k===n),
+    reveal:ok=>{undo.disabled=true;[...box.children].forEach(b=>b.disabled=true);
+      list.innerHTML=(ok?seq:q.items.map(t=>({t}))).map(x=>"<li>"+x.t+"</li>").join("");if(!ok)w.prepend(el("p","hint","Best order:"))}};
+}
+
+/* ----- results + save to Google Sheets ----- */
+function finish(){
+  app.innerHTML=""; correct=results.filter(Boolean).length;
+  const tr=track(); tr.style.setProperty("--p",0); app.append(top(),tr);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>tr.style.setProperty("--p",correct/Q.length)));
+  const rank=RANKS.find(r=>score>=r[0])[1];
+  const p=panel("Results","Mission complete");
+  const status=el("p","stat","");
+  p.append(el("div","big",score+" XP"),el("div","rank",rank),el("p","stat",correct+" of "+Q.length+" stages cleared."),status);
+  const two=el("div","two"), again=el("button","btn gold","Play again"), change=el("button","btn","Change player");
+  again.onclick=start; change.onclick=home; two.append(again,change); p.append(two);
+  const board=boardPanel(); app.append(p,board);
+  save(status,board);
+}
+async function save(status,board){
+  if(!SCRIPT_URL){status.textContent="Leaderboard not connected, so this score was not saved.";return}
+  status.textContent="Saving your score...";
+  try{
+    await fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify({name:player,score:score,correct:correct})});
+    status.textContent="Score sent to the leaderboard.";
+    setTimeout(board.reload,2000);
+  }catch(e){
+    status.textContent="Could not save your score. ";
+    const r=el("button","btn auto","Retry save"); r.onclick=()=>{r.remove();save(status,board)}; status.append(r);
+  }
+}
+home();
+</script>
+</body>
+</html>
