@@ -154,15 +154,15 @@ function home(){
   p.append(el("p","hint","Your score gets saved to the shared leaderboard. Everyone in the class can see it."));
   const f=el("form");
   f.innerHTML='<label for="nm">Player name</label><input id="nm" type="text" maxlength="20" autocomplete="nickname" placeholder="e.g. founder_juan" value="'+player.replace(/"/g,"")+'"><p class="err" id="err" role="alert"></p>';
-  const go=el("button","btn","&#9654; Press start"); go.type="submit"; f.append(go);
+  const nm=f.querySelector("#nm"), go=el("button","btn","&#9654; Press start"); go.type="submit"; f.append(go);
   f.onsubmit=e=>{
     e.preventDefault();
-    const v=f.nm.value.replace(/[\u0000-\u001f<>]/g,"").trim();
-    if(v.length<2){f.querySelector("#err").textContent="Enter a name with at least 2 characters.";f.nm.focus();return}
+    const v=nm.value.replace(/[\u0000-\u001f<>]/g,"").trim();
+    if(v.length<2){f.querySelector("#err").textContent="Enter a name with at least 2 characters.";nm.focus();return}
     player=v; start();
   };
   p.append(f); app.append(p,boardPanel());
-  f.nm.focus();
+  nm.focus();
 }
 function start(){i=0;score=0;correct=0;results=[];question()}
 
@@ -172,13 +172,13 @@ function track(){
   t.innerHTML='<div class="line"></div><div class="fill"></div>'+ROCKET+'<div class="stops">'+Q.map((q,k)=>'<span class="'+(results[k]?"done":"")+'">'+q.stop+'</span>').join("")+'</div>';
   return t;
 }
-function top(){
+function hud(){
   const d=el("div","top"), w=el("span","who"), x=el("span","xp","XP "+score+"/"+MAX);
   w.textContent=player; d.append(w,x); return d;
 }
 function question(){
   const q=Q[i]; app.innerHTML="";
-  const tr=track(); app.append(top(),tr);
+  const tr=track(); app.append(hud(),tr);
   const card=panel("Stage "+(i+1)+"/"+Q.length,q.stop);
   card.append(el("h2","q",q.q),el("p","hint",q.hint));
   const act=el("div","act"), check=el("button","btn","Check my answer"); check.disabled=true;
@@ -244,7 +244,7 @@ function order(q,done,ready){
 /* ----- results + save to Google Sheets ----- */
 function finish(){
   app.innerHTML=""; correct=results.filter(Boolean).length;
-  const tr=track(); tr.style.setProperty("--p",0); app.append(top(),tr);
+  const tr=track(); tr.style.setProperty("--p",0); app.append(hud(),tr);
   requestAnimationFrame(()=>requestAnimationFrame(()=>tr.style.setProperty("--p",correct/Q.length)));
   const rank=RANKS.find(r=>score>=r[0])[1];
   const p=panel("Results","Mission complete");
